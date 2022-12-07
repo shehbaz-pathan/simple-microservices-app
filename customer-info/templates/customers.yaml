@@ -1,0 +1,39 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Release.Name }}
+  namespace: {{ .Release.Namespace }}
+  labels:
+    {{- include "customers-labels" .| indent 4 }}
+spec:
+  replicas: {{ .Values.customers.replicas }}
+  selector:
+    matchLabels:
+      {{- include "customers-labels" .| indent 6 }}
+  template:
+    metadata:
+      labels:
+        {{- include "customers-labels" .| indent 8 }}
+    spec:
+      containers:
+        - image: {{ .Values.customers.image }}
+          imagePullPolicy: {{ .Values.customers.imagePullPolicy }}
+          name: customers
+          ports:
+            - containerPort: {{ .Values.customers.port }}
+{{- printf "\n" }}
+---
+kind: Service
+apiVersion: v1
+metadata:
+  name: {{ .Release.Name }}-customers
+  namespace: {{ .Release.Namespace }}
+  labels:
+    {{- include "customers-labels" .| indent 4 }}
+spec:
+  selector:
+    {{- include "customers-labels" .| indent 4 }}
+  ports:
+    - port: {{ .Values.customers.service.port }}
+      name: http
+      targetPort: {{ .Values.customers.port }}

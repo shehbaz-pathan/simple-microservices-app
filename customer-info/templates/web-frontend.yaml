@@ -1,0 +1,42 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  namespace: {{ .Release.Namespace }}
+  name: {{ .Release.Name }}-web-frontend
+  labels:
+    {{- include "web-frontend-labels" .| indent 4 }}
+spec:
+  replicas: {{ .Values.webFrontend.replicas }}
+  selector:
+    matchLabels:
+      {{- include "web-frontend-labels" .| indent 6 }}
+  template:
+    metadata:
+      labels:
+        app: {{- include "web-frontend-labels" .| indent 8 }}
+    spec:
+      containers:
+        - image: {{ .Values.webFrontend.image }}
+          imagePullPolicy: {{ .Values.webFrontend.imagePullPolicy }}
+          name: web
+          ports:
+            - containerPort: {{ .Values.webFrontend.port }}
+          env:
+            - name: CUSTOMER_SERVICE_URL
+              value: "http://{{ .Release.Name }}-customers.{{ .Release.Namespace }}.svc.cluster.local"
+{{- printf "\n" }}
+---
+kind: Service
+apiVersion: v1
+metadata:
+  namespace: {{ .Release.Namespace }}
+  name: {{ .Release.Name }}-web-frontend
+  labels:
+    {{- include "web-frontend-labels" .| indent 4 }}
+spec:
+  selector:
+    {{- include "web-frontend-labels" .| indent 4 }}
+  ports:
+    - port: {{ .Values.webFrontend.service.port }}
+      name: http
+      targetPort: {{ .Values.webFrontend.port }}

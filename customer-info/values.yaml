@@ -1,0 +1,17 @@
+#Default Values for customers service
+customers:
+  replicas: 1
+  image: gcr.io/tetratelabs/customers:1.0.0
+  imagePullPolicy: Always
+  port: 3000
+  service:
+    port: 80
+
+#default values for web-frontend service
+webFrontend:
+  replicas: 1
+  image: gcr.io/tetratelabs/web-frontend:1.0.0
+  imagePullPolicy: Always
+  port: 8080
+  service:
+    port: 80
