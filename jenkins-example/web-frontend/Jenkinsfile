@@ -9,7 +9,6 @@ pipeline {
           when {
             anyOf {
             changeset "jenkins-example/web-frontend/**"
-            not { changeset pattern: "Jenkinsfile" }
             }
         }
            steps {
@@ -24,7 +23,6 @@ pipeline {
           when {
             anyOf {
             changeset "jenkins-example/web-frontend/**"
-            not { changeset pattern: "Jenkinsfile" }
             }
 
            steps {
