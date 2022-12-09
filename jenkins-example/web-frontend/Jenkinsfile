@@ -38,6 +38,8 @@ pipeline {
                      git add . 
                      git commit -m "Updated image tag for web-frontend" 
                      git push https://${github_USR}:${github_PSW}@github.com/shehbaz-pathan/simple-microservices-app.git
+                     echo "Deleting cloned repo"
+                     rm -rf /tmp/simple-microservices-app
                   '''
               
            
