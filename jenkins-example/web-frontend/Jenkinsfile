@@ -7,7 +7,7 @@ pipeline {
      stages {
         stage('build') {
           when {
-            anyOf {
+            allOf {
             changeset "jenkins-example/web-frontend/**"
             not { changeset pattern: "Jenkinsfile" }
             }
@@ -22,40 +22,23 @@ pipeline {
        stage('deploy') {
         
           when {
-            anyOf {
+            allOf {
             changeset "jenkins-example/web-frontend/**"
             not { changeset pattern: "Jenkinsfile" }
             }
           }
 
            steps {
-             catchError(buildResult: 'SUCCESS', stageResult: 'FAILURE') {
                sh '''
-                     mkdir /tmp/web-frontend
-                     cd /tmp/web-frontend && git clone https://${github_USR}:${github_PSW}@github.com/shehbaz-pathan/simple-microservices-app.git
-                     cd /tmp/web-frontend/simple-microservices-app/
+                     git config --global user.email "khanshehbaz104@gmail.com" 
                      git checkout jenkins-argocd
                      export image_tag="${dockerhub_USR}/customer-info:web-frontend-${GIT_COMMIT}" 
-                     yq eval '.spec.template.spec.containers[0].image = env(image_tag)' -i /tmp/web-frontend/simple-microservices-app/jenkins-example/manifests/web-frontend.yaml
-                     git config --global user.email "khanshehbaz104@gmail.com" 
+                     yq eval '.spec.template.spec.containers[0].image = env(image_tag)' -i ./jenkins-example/manifests/web-frontend.yaml
                      git add . 
                      git commit -m "Updated image tag for web-frontend" 
                      git push https://${github_USR}:${github_PSW}@github.com/shehbaz-pathan/simple-microservices-app.git
-                     cd ~
-                     echo "Deleting cloned repo"
-                     rm -rf /tmp/web-frontend
                   '''
-             }
-           }
-       }
-        stage('clean-up') {
-
-           steps {
-               sh '''
-                     rm -rf /tmp/customers
-                  '''
-              
-           
+             
            }
        }
 
