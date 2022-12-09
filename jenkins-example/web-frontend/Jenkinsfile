@@ -42,7 +42,7 @@ pipeline {
                      git push https://${github_USR}:${github_PSW}@github.com/shehbaz-pathan/simple-microservices-app.git
                      cd ~
                      echo "Deleting cloned repo"
-                     rm -rf /tmp/web-frontend/simple-microservices-app
+                     rm -rf /tmp/web-frontend
                   '''
               
            
