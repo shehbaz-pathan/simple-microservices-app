@@ -1,0 +1,23 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: customers
+  labels:
+    app: customers
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: customers
+      version: v2
+  template:
+    metadata:
+      labels:
+        app: customers
+    spec:
+      containers:
+        - image: 6255/customer-info:customers-ec9217a6e0338b9740c27f9376f1c50a0b357a8c
+          imagePullPolicy: Always
+          name: svc
+          ports:
+            - containerPort: 3000
