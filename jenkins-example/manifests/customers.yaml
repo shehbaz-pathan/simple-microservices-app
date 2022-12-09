@@ -16,7 +16,7 @@ spec:
         app: customers
     spec:
       containers:
-        - image: 6255/customer-info:customers-0dbeb94fca2c2c612b9d84394fa1205fb1d2c06a
+        - image: 6255/customer-info:customers-2403c6f39acd8a72b2f9c6f0be9720ebe3aaebf9
           imagePullPolicy: Always
           name: svc
           ports:
