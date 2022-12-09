@@ -23,21 +23,3 @@ spec:
           env:
             - name: CUSTOMER_SERVICE_URL
               value: 'http://customers.default.svc.cluster.local'
----
-kind: Service
-apiVersion: v1
-metadata:
-  name: web-frontend
-  labels:
-    app: web-frontend
-spec:
-  selector:
-    app: web-frontend
-  ports:
-    - port: 80
-      name: http
-      targetPort: 8080
-  template:
-    spec:
-      containers:
-        - image: 6255/customer-info:web-frontend-1ba1f45545321144455e4ff0bab25454a4ec4417

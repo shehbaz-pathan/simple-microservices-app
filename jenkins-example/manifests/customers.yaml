@@ -21,21 +21,3 @@ spec:
           name: svc
           ports:
             - containerPort: 3000
----
-kind: Service
-apiVersion: v1
-metadata:
-  name: customers
-  labels:
-    app: customers
-spec:
-  selector:
-    app: customers
-  ports:
-    - port: 80
-      name: http
-      targetPort: 3000
-  template:
-    spec:
-      containers:
-        - image: 6255/customer-info:customers-0dbeb94fca2c2c612b9d84394fa1205fb1d2c06a
