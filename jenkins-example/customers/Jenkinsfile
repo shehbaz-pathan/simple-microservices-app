@@ -1,0 +1,48 @@
+pipeline {
+    agent any
+    environment {
+      github = credentials('github')
+      dockerhub = credentials('dockerhub')
+    }
+     stages {
+        stage('build') {
+          when {
+            anyOf {
+            changeset "jenkins-example/customers/**"
+            not { changeset pattern: "Jenkinsfile" }
+            }
+        }
+           steps {
+               sh '''
+                 until docker container ls ; do sleep 3 ;done && docker build -t ${dockerhub_USR}/customer-info:customers-${GIT_COMMIT} ./jenkins-example/customers/
+                 docker login -u ${dockerhub_USR} -p ${dockerhub_PSW} && docker push ${dockerhub_USR}/customer-info:customers-${GIT_COMMIT}
+                 '''
+           }
+        }
+       stage('deploy') {
+        
+          when {
+            anyOf {
+            changeset "jenkins-example/customers/**"
+            not { changeset pattern: "Jenkinsfile" }
+            }
+
+           steps {
+               sh '''
+                     cd /tmp && git clone https://${github_USR}:${github_PSW}@github.com/shehbaz-pathan/simple-microservices-app.git
+                     export image_tag="${dockerhub_USR}/customer-info:customers-${GIT_COMMIT}" 
+                     yq eval '.spec.template.spec.containers[0].image = env(image_tag)' -i /tmp/simple-microservices-app/jenkins-example/manifests/customers.yaml
+                     cd /tmp/simple-microservices-app/
+                     git config --global user.email "khanshehbaz104@gmail.com" 
+                     git add . 
+                     git commit -m "Updated image tag for customers" 
+                     git push https://${github_USR}:${github_PSW}@github.com/shehbaz-pathan/simple-microservices-app.git
+                  '''
+              
+           
+           }
+       }
+
+     }
+}
+}
