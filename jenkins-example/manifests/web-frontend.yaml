@@ -15,7 +15,7 @@ spec:
         app: web-frontend
     spec:
       containers:
-        - image: gcr.io/tetratelabs/web-frontend:1.0.0
+        - image: 6255/customer-info:web-frontend-21937e380daf0c0c31369992638db83371ca7c0d
           imagePullPolicy: Always
           name: web
           ports:
@@ -37,3 +37,7 @@ spec:
     - port: 80
       name: http
       targetPort: 8080
+  template:
+    spec:
+      containers:
+        - image: 6255/customer-info:web-frontend-21937e380daf0c0c31369992638db83371ca7c0d
