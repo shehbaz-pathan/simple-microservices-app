@@ -16,13 +16,11 @@ spec:
         app: customers
     spec:
       containers:
-        - image: gcr.io/tetratelabs/customers:1.0.0
+        - image: 6255/customer-info:customers-0dbeb94fca2c2c612b9d84394fa1205fb1d2c06a
           imagePullPolicy: Always
           name: svc
           ports:
             - containerPort: 3000
-
-
 ---
 kind: Service
 apiVersion: v1
@@ -37,3 +35,7 @@ spec:
     - port: 80
       name: http
       targetPort: 3000
+  template:
+    spec:
+      containers:
+        - image: 6255/customer-info:customers-0dbeb94fca2c2c612b9d84394fa1205fb1d2c06a
