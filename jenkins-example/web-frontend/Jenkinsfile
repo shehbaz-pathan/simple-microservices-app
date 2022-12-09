@@ -30,16 +30,19 @@ pipeline {
 
            steps {
                sh '''
-                     cd /tmp && git clone https://${github_USR}:${github_PSW}@github.com/shehbaz-pathan/simple-microservices-app.git
+                     mkdir /tmp/web-frontend
+                     cd /tmp/web-frontend && git clone https://${github_USR}:${github_PSW}@github.com/shehbaz-pathan/simple-microservices-app.git
+                     cd /tmp/web-frontend/simple-microservices-app/
+                     git checkout jenkins-argocd
                      export image_tag="${dockerhub_USR}/customer-info:web-frontend-${GIT_COMMIT}" 
-                     yq eval '.spec.template.spec.containers[0].image = env(image_tag)' -i /tmp/simple-microservices-app/jenkins-example/manifests/web-frontend.yaml
-                     cd /tmp/simple-microservices-app/
+                     yq eval '.spec.template.spec.containers[0].image = env(image_tag)' -i /tmp/web-frontend/simple-microservices-app/jenkins-example/manifests/web-frontend.yaml
                      git config --global user.email "khanshehbaz104@gmail.com" 
                      git add . 
                      git commit -m "Updated image tag for web-frontend" 
                      git push https://${github_USR}:${github_PSW}@github.com/shehbaz-pathan/simple-microservices-app.git
+                     cd ~
                      echo "Deleting cloned repo"
-                     rm -rf /tmp/simple-microservices-app
+                     rm -rf /tmp/web-frontend/simple-microservices-app
                   '''
               
            
