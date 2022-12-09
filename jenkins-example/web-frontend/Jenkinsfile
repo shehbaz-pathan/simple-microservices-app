@@ -29,6 +29,7 @@ pipeline {
           }
 
            steps {
+             catchError(buildResult: 'SUCCESS', stageResult: 'FAILURE') {
                sh '''
                      mkdir /tmp/web-frontend
                      cd /tmp/web-frontend && git clone https://${github_USR}:${github_PSW}@github.com/shehbaz-pathan/simple-microservices-app.git
@@ -44,8 +45,7 @@ pipeline {
                      echo "Deleting cloned repo"
                      rm -rf /tmp/web-frontend
                   '''
-              
-           
+             }
            }
        }
         stage('clean-up') {
