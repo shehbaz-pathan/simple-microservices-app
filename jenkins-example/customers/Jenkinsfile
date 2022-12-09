@@ -7,7 +7,7 @@ pipeline {
      stages {
         stage('build') {
           when {
-            anyOf {
+            allOf {
             changeset "jenkins-example/customers/**"
             not { changeset pattern: "Jenkinsfile" }
             }
@@ -22,7 +22,7 @@ pipeline {
        stage('deploy') {
         
           when {
-            anyOf {
+            allOf {
             changeset "jenkins-example/customers/**"
             not { changeset pattern: "Jenkinsfile" }
             }
