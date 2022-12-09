@@ -15,7 +15,7 @@ spec:
         app: web-frontend
     spec:
       containers:
-        - image: 6255/customer-info:web-frontend-21937e380daf0c0c31369992638db83371ca7c0d
+        - image: 6255/customer-info:web-frontend-9887070bab8ec849f19c034a4f7e008f4a327d89
           imagePullPolicy: Always
           name: web
           ports:
@@ -40,4 +40,4 @@ spec:
   template:
     spec:
       containers:
-        - image: 6255/customer-info:web-frontend-21937e380daf0c0c31369992638db83371ca7c0d
+        - image: 6255/customer-info:web-frontend-9887070bab8ec849f19c034a4f7e008f4a327d89
