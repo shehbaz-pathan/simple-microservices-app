@@ -15,8 +15,6 @@ spec:
     metadata:
       labels:
         app: web-frontend
-        version: v1
-        sidecar.istio.io/inject: "true"
     spec:
       containers:
         - image: gcr.io/tetratelabs/web-frontend:1.0.0
